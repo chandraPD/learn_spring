@@ -2,14 +2,13 @@ package com.demoJava.demo.dto;
 
 import java.sql.Date;
 
-public class DetailBiodataDto {
+public class BiodataDto {
 	private String domisili;
 	private Integer usia;
 	private Date tanggalLahir;
 	private String hobi;
 	private String jenisKelamin;
 	private Integer personId;
-	
 	public String getDomisili() {
 		return domisili;
 	}
@@ -46,5 +45,19 @@ public class DetailBiodataDto {
 	public void setPersonId(Integer personId) {
 		this.personId = personId;
 	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	private String firstName;
+	private String lastName;
 	
 }
