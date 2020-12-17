@@ -9,6 +9,8 @@ public class BiodataDto {
 	private String hobi;
 	private String jenisKelamin;
 	private Integer personId;
+	private String nik;
+	
 	public String getDomisili() {
 		return domisili;
 	}
@@ -56,6 +58,12 @@ public class BiodataDto {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public String getNik() {
+		return nik;
+	}
+	public void setNik(String nik) {
+		this.nik = nik;
 	}
 	private String firstName;
 	private String lastName;

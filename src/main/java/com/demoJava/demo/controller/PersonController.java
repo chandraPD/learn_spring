@@ -3,6 +3,7 @@ package com.demoJava.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demoJava.demo.dto.BiodataDto;
 import com.demoJava.demo.dto.DetailBiodataDto;
 import com.demoJava.demo.dto.PersonDto;
+import com.demoJava.demo.dto.StatusMessageDto;
 import com.demoJava.demo.entity.DetailBiodataEntity;
 import com.demoJava.demo.entity.PersonEntity;
 import com.demoJava.demo.repository.DetailBiodataRepository;
@@ -45,7 +47,7 @@ public class PersonController {
 	
 	@GetMapping("/get-by-id/{id}")
 	public ResponseEntity<?> getById(@PathVariable Integer id){
-		PersonEntity personEntity = new PersonEntity();
+//		PersonEntity personEntity = new PersonEntity();
 		PersonDto dto = new PersonDto();
 		dto.setFirstName(personRepository.findFirstNameById(id));
 		return ResponseEntity.ok(dto.getFirstName());
@@ -57,6 +59,29 @@ public class PersonController {
 		PersonEntity personEntity = convertToPersonEntity(dto);
 		personRepository.save(personEntity);
 		return ResponseEntity.ok(personEntity);
+	}
+	
+
+	@PostMapping("/post-person-status")
+	public ResponseEntity<?> insertPerson2(@RequestBody BiodataDto dto){
+			
+		if(dto.getNik().length() != 16) {
+			StatusMessageDto<PersonEntity> result = new StatusMessageDto<>();
+			result.setMessage("Nik Harus berisi 16 karakter");
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setData(null);
+			return ResponseEntity.badRequest().body(result);
+		}else {
+			PersonEntity personEntity = convertToPersonEntity(dto);
+			StatusMessageDto<PersonEntity> result = new StatusMessageDto<>();
+						
+			personRepository.save(personEntity);
+			result.setMessage("Nik Harus berisi 16 karakter");
+			result.setStatus(HttpStatus.OK.value());
+			result.setData(personEntity);
+			return ResponseEntity.ok(result);
+		}
+		
 	}
 	
 	
@@ -138,6 +163,7 @@ public class PersonController {
 		
 		personEntity.setFirstName(dto.getFirstName());
 		personEntity.setLastName(dto.getLastName());
+		personEntity.setNik(dto.getNik());
 		return personEntity;
 	}
 	

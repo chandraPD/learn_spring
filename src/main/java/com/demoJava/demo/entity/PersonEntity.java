@@ -20,16 +20,28 @@ public class PersonEntity {
 	private String firstName;
 	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
+	
+	@Column(name = "nik", length = 16, nullable = false)
+	private String nik;
+
+	public String getNik() {
+		return nik;
+	}
+
+	public void setNik(String nik) {
+		this.nik = nik;
+	}
 
 	public PersonEntity() {
 		super();
 	}
 
-	public PersonEntity(Integer id, String firstName, String lastName) {
+	public PersonEntity(Integer id, String firstName, String lastName, String nik) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.nik = nik;
 	}
 
 	public Integer getId() {

@@ -40,13 +40,9 @@ public class PendidikanController {
 	@PostMapping("/post-pendidikan")
 	public ResponseEntity<?> insertPendidikan(@RequestBody PendidikanDto dto){
 		
-		PendidikanEntity pendidikanEntity = new PendidikanEntity();
+		PendidikanEntity pendidikanEntity = convertPendidikanEntity(dto);
 		PersonEntity personEntity = personRepository.findById(dto.getPersonId()).get();
-		
-		pendidikanEntity.setInstitusi(dto.getInstitusi());
-		pendidikanEntity.setLevel(dto.getLevel());
-		pendidikanEntity.setTahunMasuk(dto.getTahunMasuk());
-		pendidikanEntity.setTahunLulus(dto.getTahunLulus());
+	
 		pendidikanEntity.setPersonEntity(personEntity);
 		pendidikanRepository.save(pendidikanEntity);
 		return ResponseEntity.ok(pendidikanEntity);
@@ -57,14 +53,12 @@ public class PendidikanController {
 		PendidikanEntity pendidikanEntity = pendidikanRepository.findById(idPendidikan).get();
 		pendidikanEntity.setLevel(dto.getLevel());
 		pendidikanEntity.setInstitusi(dto.getInstitusi());
-		pendidikanEntity.setLevel(dto.getLevel());
 		pendidikanEntity.setTahunMasuk(dto.getTahunMasuk());
 		pendidikanEntity.setTahunLulus(dto.getTahunLulus());
 		pendidikanRepository.save(pendidikanEntity);
 		return ResponseEntity.ok(pendidikanEntity);
 	}
 //	delete
-	
 	@DeleteMapping("/delete/{idPendidikan}")
 	public ResponseEntity<?> delete(@PathVariable Integer idPendidikan){
 		PendidikanEntity pendidikanEntity = pendidikanRepository.findById(idPendidikan).get();
@@ -72,5 +66,27 @@ public class PendidikanController {
 		return ResponseEntity.ok(pendidikanEntity);
 	}
 	
+	@GetMapping("/get-pendidikan-by-id/{id}")
+	public ResponseEntity<?> getById(@PathVariable Integer id){
+		List<PendidikanEntity> pendidikanEntity = pendidikanRepository.getPendidikanById(id);
+		return ResponseEntity.ok(pendidikanEntity);
+		
+	}
+
+	
+	@GetMapping("/get-pendidikan-by-person-id/{personId}")
+	public ResponseEntity<?> getByPersonId(@PathVariable Integer personId){
+		List<PendidikanEntity> pendidikanEntity = pendidikanRepository.getPendidikanByPersonId(personId);
+		return ResponseEntity.ok(pendidikanEntity);
+		
+	}
+	public PendidikanEntity convertPendidikanEntity(PendidikanDto dto) {
+		PendidikanEntity pendidikanEntity = new PendidikanEntity();
+		pendidikanEntity.setInstitusi(dto.getInstitusi());
+		pendidikanEntity.setLevel(dto.getLevel());
+		pendidikanEntity.setTahunMasuk(dto.getTahunMasuk());
+		pendidikanEntity.setTahunLulus(dto.getTahunLulus());
+		return pendidikanEntity;
+	}
 	
 }
