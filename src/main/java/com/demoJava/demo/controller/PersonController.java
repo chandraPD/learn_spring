@@ -76,7 +76,7 @@ public class PersonController {
 			StatusMessageDto<PersonEntity> result = new StatusMessageDto<>();
 						
 			personRepository.save(personEntity);
-			result.setMessage("Nik Harus berisi 16 karakter");
+			result.setMessage("Berhasil");
 			result.setStatus(HttpStatus.OK.value());
 			result.setData(personEntity);
 			return ResponseEntity.ok(result);
@@ -101,16 +101,32 @@ public class PersonController {
 
 	@PostMapping("/post-detail-person")
 	public ResponseEntity<?> insertDetail(@RequestBody DetailBiodataDto dto){
-		DetailBiodataEntity detailBiodataEntity = new DetailBiodataEntity();
-		PersonEntity personEntity = personRepository.findById(dto.getPersonId()).get();
-		detailBiodataEntity.setDomisili(dto.getDomisili());
-		detailBiodataEntity.setHobi(dto.getHobi());
-		detailBiodataEntity.setJenisKelamin(dto.getJenisKelamin());
-		detailBiodataEntity.setTanggalLahir(dto.getTanggalLahir());
-		detailBiodataEntity.setUsia(dto.getUsia());
-		detailBiodataEntity.setPersonEntity(personEntity);
-		detailBiodataRepository.save(detailBiodataEntity);
-		return ResponseEntity.ok(detailBiodataEntity);
+		
+		if(dto.getUsia() < 17 || dto.getUsia() > 50) {
+			StatusMessageDto<PersonEntity> result = new StatusMessageDto<>();
+			result.setMessage("Usia harus Lebih Besar dari 17 Tahun dan Lebih kecil dari 50 Tahun");
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		}else {
+			StatusMessageDto<PersonEntity> result = new StatusMessageDto<>();
+			DetailBiodataEntity detailBiodataEntity = new DetailBiodataEntity();
+			PersonEntity personEntity = personRepository.findById(dto.getPersonId()).get();
+			detailBiodataEntity.setDomisili(dto.getDomisili());
+			detailBiodataEntity.setHobi(dto.getHobi());
+			detailBiodataEntity.setJenisKelamin(dto.getJenisKelamin());
+			detailBiodataEntity.setTanggalLahir(dto.getTanggalLahir());
+			detailBiodataEntity.setUsia(dto.getUsia());
+			detailBiodataEntity.setPersonEntity(personEntity);
+			detailBiodataRepository.save(detailBiodataEntity);
+			
+			result.setMessage("Berhasil");
+			result.setStatus(HttpStatus.OK.value());
+			result.setData(personEntity);
+			return ResponseEntity.ok(result);
+		}
+		
+		
 	}
 	
 //	UPDATE DATA
